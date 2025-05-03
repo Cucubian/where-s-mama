@@ -18,7 +18,8 @@ def get_random_positions():
 
 def get_min_steps(grid, start, end):
     path = a_star(grid, start, end)
-    return len(path) if path else 9999  # Tránh lỗi nếu không có đường đi
+    print(f"Min steps calculated: {len(path) if path else 'No path'}")  # Debug
+    return len(path) if path else 9999, path  # Trả về cả min_steps và path
 
 def run_game(screen):
     clock = pygame.time.Clock()
@@ -34,8 +35,12 @@ def run_game(screen):
                 if bfs(grid, start_pos, end_pos):
                     break
 
-            min_steps = get_min_steps(grid, start_pos, end_pos)
+            min_steps, path = get_min_steps(grid, start_pos, end_pos)
+            if not path:
+                continue  # Tạo lại maze nếu không tìm được đường đi bằng A*
+
             player = Player(*start_pos)
+            visited_tiles = set()
             steps = 0
             running = True
 
@@ -53,16 +58,24 @@ def run_game(screen):
                     if event.type == pygame.QUIT:
                         running = False
                     elif event.type == pygame.KEYDOWN:
-                        if event.key == pygame.K_LEFT and player.move(-1, 0, grid): steps += 1
-                        elif event.key == pygame.K_RIGHT and player.move(1, 0, grid): steps += 1
-                        elif event.key == pygame.K_UP and player.move(0, -1, grid): steps += 1
-                        elif event.key == pygame.K_DOWN and player.move(0, 1, grid): steps += 1
+                        if event.key == pygame.K_LEFT and player.move(-1, 0, grid):
+                            steps += 1
+                            visited_tiles.add((player.x, player.y))
+                        elif event.key == pygame.K_RIGHT and player.move(1, 0, grid):
+                            steps += 1
+                            visited_tiles.add((player.x, player.y))
+                        elif event.key == pygame.K_UP and player.move(0, -1, grid):
+                            steps += 1
+                            visited_tiles.add((player.x, player.y))
+                        elif event.key == pygame.K_DOWN and player.move(0, 1, grid):
+                            steps += 1
+                            visited_tiles.add((player.x, player.y))
 
                 # Làm mới màn hình
                 screen.fill(WHITE)
 
-                # Vẽ mê cung
-                draw_grid(screen, grid, [], start_pos, end_pos)
+                # Vẽ mê cung và các ô đã đi qua
+                draw_grid(screen, grid, [], start_pos, end_pos, visited_tiles)
                 player.draw(screen)
 
                 # Vẽ thanh trên cùng và thông tin
