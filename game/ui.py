@@ -82,3 +82,10 @@ def show_game_over(screen, won, steps, min_steps, level=1):
                     return True
                 if quit_rect.collidepoint(x, y):
                     pygame.quit(); sys.exit()
+
+        # Kiểm tra nếu chuột đang trỏ vào nút hợp lệ thì đổi con trỏ
+        mouse_pos = pygame.mouse.get_pos()
+        if replay_rect.collidepoint(mouse_pos) or quit_rect.collidepoint(mouse_pos):
+            pygame.mouse.set_system_cursor(pygame.SYSTEM_CURSOR_HAND)
+        else:
+            pygame.mouse.set_system_cursor(pygame.SYSTEM_CURSOR_ARROW)
