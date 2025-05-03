@@ -24,7 +24,6 @@ def get_min_steps(grid, start, end):
 def run_game(screen):
     clock = pygame.time.Clock()
     global CURRENT_LEVEL
-    CURRENT_LEVEL = 1  # Bắt đầu từ level 1
 
     while True:
         if show_menu(screen, CURRENT_LEVEL):
@@ -50,6 +49,7 @@ def run_game(screen):
             while running:
                 clock.tick(FPS)
 
+                # Cập nhật thời gian còn lại
                 current_time = time.time()
                 elapsed_time = current_time - start_time
                 remaining_time = max(0, int(time_limit - elapsed_time))
@@ -71,6 +71,10 @@ def run_game(screen):
                             steps += 1
                             visited_tiles.add((player.x, player.y))
 
+                # Xóa màn hình trước khi vẽ lại
+                screen.fill(WHITE)
+
+                # Vẽ lưới maze và chân khỉ
                 draw_grid(screen, grid, [], start_pos, end_pos, visited_tiles)
                 player.draw(screen)
 
@@ -82,23 +86,29 @@ def run_game(screen):
                 screen.blit(font.render(f'Steps: {steps}', True, BLUE), (200, 10))
                 screen.blit(font.render(f'Time left: {remaining_time}s', True, RED), (300, 10))
 
+                # Kiểm tra khi người chơi thắng
                 if (player.x, player.y) == end_pos:
                     CURRENT_LEVEL += 1  # Tăng level
                     if show_game_over(screen, True, steps, min_steps, CURRENT_LEVEL):
-                        running = False  # Thoát vòng lặp để tạo mê cung mới
+                        running = False  # Thoát vòng lặp để tạo maze mới
                     else:
-                        pygame.quit(); sys.exit()  # Thoát nếu người chơi chọn Quit
+                        pygame.quit()
+                        sys.exit()  # Thoát nếu người chơi chọn Quit
+                # Kiểm tra khi người chơi thua (vượt quá số bước tối thiểu)
                 elif steps >= min_steps:
                     CURRENT_LEVEL = 1  # Reset về level 1 khi thua
                     if show_game_over(screen, False, steps, min_steps, CURRENT_LEVEL):
-                        running = False  # Thoát vòng lặp để tạo mê cung mới
+                        running = False  # Thoát vòng lặp để tạo maze mới
                     else:
-                        pygame.quit(); sys.exit()  # Thoát nếu người chơi chọn Quit
+                        pygame.quit()
+                        sys.exit()  # Thoát nếu người chơi chọn Quit
+                # Kiểm tra khi hết thời gian
                 elif elapsed_time >= time_limit:
                     CURRENT_LEVEL = 1  # Reset về level 1 khi hết thời gian
                     if show_game_over(screen, False, steps, min_steps, CURRENT_LEVEL):
-                        running = False  # Thoát vòng lặp để tạo mê cung mới
+                        running = False  # Thoát vòng lặp để tạo maze mới
                     else:
-                        pygame.quit(); sys.exit()  # Thoát nếu người chơi chọn Quit
+                        pygame.quit()
+                        sys.exit()  # Thoát nếu người chơi chọn Quit
 
-                pygame.display.flip()
+                pygame.display.flip()  # Cập nhật màn hình
