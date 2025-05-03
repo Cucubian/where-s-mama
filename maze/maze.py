@@ -10,7 +10,8 @@ ROCK_IMG = pygame.transform.scale(ROCK_IMG, (CELL_SIZE, CELL_SIZE))
 GRASS_IMG = pygame.image.load('assets/images/grass.png')
 GRASS_IMG = pygame.transform.scale(GRASS_IMG, (CELL_SIZE, CELL_SIZE))
 
-def generate_maze():
+def generate_maze(start_pos, end_pos):
+    
     """
     Trả về grid kích thước GRID_WIDTH x GRID_HEIGHT:
     0 = đường đi, 1 = chướng ngại vật (rock)
@@ -19,8 +20,9 @@ def generate_maze():
     for x in range(GRID_WIDTH):
         for y in range(GRID_HEIGHT):
             # Sinh chướng ngại vật 20%, trừ START và END
-            if random.random() < OBSTACLE_RATIO and (x, y) != START_POS and (x, y) != END_POS:
+            if random.random() < OBSTACLE_RATIO and (x, y) != start_pos and (x, y) != end_pos:
                 grid[x][y] = 1
+
     return grid
 
 def draw_grid(screen, grid, path, start, end):

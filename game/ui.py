@@ -4,7 +4,7 @@ import sys
 from settings import WIDTH, HEIGHT, WHITE, BLUE, GREEN, RED, ORANGE  # Thêm ORANGE
 
 def show_menu(screen, level=1):
-    background = pygame.image.load('assets/images/')  # Đường dẫn đến ảnh nền
+    background = pygame.image.load('assets/images/mother.png')  # Đường dẫn đến ảnh nền
     background = pygame.transform.scale(background, (WIDTH, HEIGHT))  # Đảm bảo vừa với màn hình
     screen.blit(background, (0, 0))
 

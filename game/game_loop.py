@@ -6,6 +6,15 @@ from game.player import Player
 from game.bfs import bfs
 from game.ui import show_menu, show_game_over
 import time
+import random
+
+
+def get_random_positions():
+    while True:
+        start = (random.randint(0, GRID_WIDTH - 1), random.randint(0, GRID_HEIGHT - 1))
+        end = (random.randint(0, GRID_WIDTH - 1), random.randint(0, GRID_HEIGHT - 1))
+        if start != end:
+            return start, end
 
 def get_min_steps(grid, start, end):
     path = a_star(grid, start, end)
@@ -20,13 +29,15 @@ def run_game(screen):
         if show_menu(screen, CURRENT_LEVEL):
             # Sinh maze cho đến khi có đường đi
             while True:
-                grid = generate_maze()
-                if bfs(grid, START_POS, END_POS):  # BFS tìm thấy đường đi
-                    break  # Thoát khỏi vòng lặp
+                start_pos, end_pos = get_random_positions()
+                grid = generate_maze(start_pos, end_pos)
+                if bfs(grid, start_pos, end_pos):
+                    break
 
 
-            min_steps = get_min_steps(grid, START_POS, END_POS)
-            player = Player(*START_POS)
+
+            min_steps = get_min_steps(grid, start_pos, end_pos)
+            player = Player(*start_pos)
             steps = 0
             running = True
 
@@ -50,7 +61,7 @@ def run_game(screen):
                         elif event.key == pygame.K_DOWN and player.move(0, 1, grid): steps += 1
 
                 screen.fill(WHITE)
-                draw_grid(screen, grid, [], START_POS, END_POS)
+                draw_grid(screen, grid, [], start_pos, end_pos)
                 player.draw(screen)
 
                 font = pygame.font.Font(None, 36)
@@ -59,7 +70,7 @@ def run_game(screen):
                 screen.blit(font.render(f'Steps: {steps}', True, BLUE), (10, 90))
                 screen.blit(font.render(f'Time left: {remaining_time}s', True, RED), (10, 130))
 
-                if (player.x, player.y) == END_POS:
+                if (player.x, player.y) == end_pos:
                     CURRENT_LEVEL += 1  # Tăng level
                     if show_game_over(screen, True, steps, min_steps, CURRENT_LEVEL):
                         running = False  # Thoát vòng lặp để tạo mê cung mới

@@ -6,8 +6,8 @@ WIDTH = CELL_SIZE * GRID_WIDTH
 HEIGHT = CELL_SIZE * GRID_HEIGHT
 FPS = 60
 
-START_POS = (0, 0)
-END_POS = (GRID_WIDTH - 1, GRID_HEIGHT - 1)
+# START_POS = (0, 0)
+# END_POS = (GRID_WIDTH - 1, GRID_HEIGHT - 1)
 CURRENT_LEVEL = 1  # Bắt đầu từ level 1
 OBSTACLE_RATIO = 0.2  # Tỷ lệ chướng ngại vật cố định
 TIME_LIMIT = 120  # Thời gian giới hạn cố định (2 phút)
