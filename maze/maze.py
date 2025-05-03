@@ -9,6 +9,9 @@ ROCK_IMG = pygame.transform.scale(ROCK_IMG, (CELL_SIZE, CELL_SIZE))
 GRASS_IMG = pygame.image.load('assets/images/grass.png')
 GRASS_IMG = pygame.transform.scale(GRASS_IMG, (CELL_SIZE, CELL_SIZE))
 
+FOOTPRINT_IMG = pygame.image.load('assets/images/footprint.png')
+FOOTPRINT_IMG = pygame.transform.scale(FOOTPRINT_IMG, (CELL_SIZE, CELL_SIZE))
+
 def generate_maze(start_pos, end_pos):
     """
     Trả về grid kích thước GRID_WIDTH x GRID_HEIGHT:
@@ -25,7 +28,7 @@ def generate_maze(start_pos, end_pos):
 
     return grid
 
-def draw_grid(screen, grid, path, start, end):
+def draw_grid(screen, grid, path, start, end, visited_tiles):
     """
     Vẽ grid lên screen:
     - grid[x][y] == 1 → blit rock image
@@ -37,17 +40,16 @@ def draw_grid(screen, grid, path, start, end):
         for y in range(GRID_HEIGHT):
             rect = pygame.Rect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE)
 
-            if grid[x][y] == 1:
-                # Vẽ rock thay vì ô đen
+            if (x, y) in visited_tiles:
+                screen.blit(FOOTPRINT_IMG, rect)
+
+            elif grid[x][y] == 1:
                 screen.blit(ROCK_IMG, rect)
             elif (x, y) in path:
-                # Vẽ đường đi bằng grass
                 screen.blit(GRASS_IMG, rect)
             else:
-                # Vẽ background là cỏ
                 screen.blit(GRASS_IMG, rect)
 
-            # Vẽ lưới
             pygame.draw.rect(screen, GRAY, rect, 1)
 
     # Vẽ start và end

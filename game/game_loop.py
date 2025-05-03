@@ -42,6 +42,7 @@ def run_game(screen):
             min_steps = len(path)
 
             player = Player(*start_pos)
+            visited_tiles = set()
             steps = 0
             running = True
 
@@ -59,13 +60,22 @@ def run_game(screen):
                     if event.type == pygame.QUIT:
                         running = False
                     elif event.type == pygame.KEYDOWN:
-                        if event.key == pygame.K_LEFT and player.move(-1, 0, grid): steps += 1
-                        elif event.key == pygame.K_RIGHT and player.move(1, 0, grid): steps += 1
-                        elif event.key == pygame.K_UP and player.move(0, -1, grid): steps += 1
-                        elif event.key == pygame.K_DOWN and player.move(0, 1, grid): steps += 1
+                        if event.key == pygame.K_LEFT and player.move(-1, 0, grid):
+                            steps += 1
+                            visited_tiles.add((player.x, player.y))
+                        elif event.key == pygame.K_RIGHT and player.move(1, 0, grid):
+                            steps += 1
+                            visited_tiles.add((player.x, player.y))
+                        elif event.key == pygame.K_UP and player.move(0, -1, grid):
+                            steps += 1
+                            visited_tiles.add((player.x, player.y))
+                        elif event.key == pygame.K_DOWN and player.move(0, 1, grid):
+                            steps += 1
+                            visited_tiles.add((player.x, player.y))
+
 
                 screen.fill(WHITE)
-                draw_grid(screen, grid, [], start_pos, end_pos)
+                draw_grid(screen, grid, [], start_pos, end_pos, visited_tiles)
                 player.draw(screen)
 
                 font = pygame.font.Font(None, 36)
