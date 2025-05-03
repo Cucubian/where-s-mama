@@ -36,7 +36,11 @@ def run_game(screen):
 
 
 
-            min_steps = get_min_steps(grid, start_pos, end_pos)
+            path = a_star(grid, start_pos, end_pos)
+            if not path:
+                continue  # Tạo lại maze nếu không tìm được đường đi bằng A*
+            min_steps = len(path)
+
             player = Player(*start_pos)
             steps = 0
             running = True

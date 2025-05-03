@@ -26,9 +26,12 @@ def a_star(maze, start, end):
         
         closed_list.add(current)
         
+        # Di chuyển đến các ô kề bên (lên, xuống, trái, phải)
         for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
             neighbor = (current[0] + dx, current[1] + dy)
-            if 0 <= neighbor[0] < len(maze) and 0 <= neighbor[1] < len(maze[0]) and maze[neighbor[1]][neighbor[0]] == 0:
+            
+            # Kiểm tra tính hợp lệ của ô và không phải là vật cản (value == 0)
+            if 0 <= neighbor[0] < len(maze) and 0 <= neighbor[1] < len(maze[0]) and maze[neighbor[0]][neighbor[1]] == 0:
                 if neighbor in closed_list:
                     continue
                 
