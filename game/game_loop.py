@@ -18,14 +18,12 @@ def run_game(screen):
 
     while True:
         if show_menu(screen, CURRENT_LEVEL):
-            grid = generate_maze()
-            if not bfs(grid, START_POS, END_POS):
-                font = pygame.font.Font(None, 74)
-                text = font.render('Maze không khả dụng!', True, RED)
-                screen.blit(text, (WIDTH//2 - text.get_width()//2, HEIGHT//2))
-                pygame.display.flip()
-                pygame.time.wait(2000)
-                continue
+            # Sinh maze cho đến khi có đường đi
+            while True:
+                grid = generate_maze()
+                if bfs(grid, START_POS, END_POS):  # BFS tìm thấy đường đi
+                    break  # Thoát khỏi vòng lặp
+
 
             min_steps = get_min_steps(grid, START_POS, END_POS)
             player = Player(*START_POS)
