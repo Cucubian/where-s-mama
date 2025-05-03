@@ -38,7 +38,7 @@ def draw_grid(screen, grid, path, start, end, visited_tiles):
     """
     for x in range(GRID_WIDTH):
         for y in range(GRID_HEIGHT):
-            rect = pygame.Rect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE)
+            rect = pygame.Rect(x * CELL_SIZE, y * CELL_SIZE + TOP_BAR_HEIGHT, CELL_SIZE, CELL_SIZE)
 
             if (x, y) in visited_tiles:
                 screen.blit(FOOTPRINT_IMG, rect)
@@ -55,5 +55,6 @@ def draw_grid(screen, grid, path, start, end, visited_tiles):
     # Vẽ start và end
     sx, sy = start
     ex, ey = end
-    pygame.draw.rect(screen, GREEN, pygame.Rect(sx * CELL_SIZE, sy * CELL_SIZE, CELL_SIZE, CELL_SIZE))
-    pygame.draw.rect(screen, RED, pygame.Rect(ex * CELL_SIZE, ey * CELL_SIZE, CELL_SIZE, CELL_SIZE))
+    pygame.draw.rect(screen, GREEN, pygame.Rect(sx * CELL_SIZE, sy * CELL_SIZE + TOP_BAR_HEIGHT, CELL_SIZE, CELL_SIZE))
+    pygame.draw.rect(screen, RED, pygame.Rect(ex * CELL_SIZE, ey * CELL_SIZE + TOP_BAR_HEIGHT, CELL_SIZE, CELL_SIZE))
+

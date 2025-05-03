@@ -74,17 +74,17 @@ def run_game(screen):
                 # Xóa màn hình trước khi vẽ lại
                 screen.fill(WHITE)
 
-                # Vẽ lưới maze và chân khỉ
-                draw_grid(screen, grid, [], start_pos, end_pos, visited_tiles)
-                player.draw(screen)
-
-                # Vẽ thanh trên cùng và thông tin
-                pygame.draw.rect(screen, (200, 200, 200), (0, 0, WIDTH, 50))  # Thanh xám nhạt, cao 50 pixel
+                # Vẽ thanh thông tin trên cùng (50px)
+                pygame.draw.rect(screen, (230, 230, 230), (0, 0, WIDTH, 50))  # Màu xám rất nhạt
                 font = pygame.font.Font(None, 24)  # Font nhỏ hơn để vừa với thanh
                 screen.blit(font.render(f'Level: {CURRENT_LEVEL}', True, PURPLE), (10, 10))
-                screen.blit(font.render(f'Min steps: {min_steps}', True, ORANGE), (100, 10))
-                screen.blit(font.render(f'Steps: {steps}', True, BLUE), (200, 10))
+                screen.blit(font.render(f'Min steps: {min_steps}', True, ORANGE), (90, 10))
+                screen.blit(font.render(f'Steps: {steps}', True, BLUE), (210, 10))
                 screen.blit(font.render(f'Time left: {remaining_time}s', True, RED), (300, 10))
+
+                # Vẽ maze (phần còn lại của màn hình) dưới thanh thông tin
+                draw_grid(screen, grid, [], start_pos, end_pos, visited_tiles)
+                player.draw(screen)
 
                 # Kiểm tra khi người chơi thắng
                 if (player.x, player.y) == end_pos:

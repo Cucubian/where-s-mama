@@ -1,5 +1,6 @@
 import pygame
 from settings import BLOCK_SIZE
+from settings import BLOCK_SIZE, TOP_BAR_HEIGHT
 
 class Player:
     def __init__(self, x, y):
@@ -18,4 +19,5 @@ class Player:
         return False
 
     def draw(self, screen):
-        screen.blit(self.image, (self.x * BLOCK_SIZE, self.y * BLOCK_SIZE))
+        screen.blit(self.image, (self.x * BLOCK_SIZE, self.y * BLOCK_SIZE + TOP_BAR_HEIGHT))
+

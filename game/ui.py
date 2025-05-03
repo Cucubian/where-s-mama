@@ -35,33 +35,50 @@ def show_menu(screen, level=1):
 
 def show_game_over(screen, won, steps, min_steps, level=1):
     screen.fill(WHITE)
-    font = pygame.font.Font(None, 74)
-    text = font.render('You Win!' if won else 'Game Over!', True, GREEN if won else RED)
-    screen.blit(text, (WIDTH//2 - text.get_width()//2, HEIGHT//4))
+    title_font = pygame.font.Font(None, 60)  # Font lớn cho tiêu đề
+    text_font = pygame.font.Font(None, 36)   # Font nhỏ cho thông tin
+    mid_x = WIDTH // 2
+    mid_y = HEIGHT // 2
+    line_gap = 50  # khoảng cách giữa các dòng
 
-    font = pygame.font.Font(None, 36)
-    steps_text = font.render(f'Steps: {steps}', True, BLUE)
-    screen.blit(steps_text, (WIDTH//2 - steps_text.get_width()//2, HEIGHT//2))
+    if won:
+        # Chỉ hiện 1 dòng khi thắng
+        win_text = title_font.render('You Win!', True, GREEN)
+        screen.blit(win_text, win_text.get_rect(center=(mid_x, mid_y - line_gap)))
+    else:
+        # Hai dòng: "Game Over!" và "You Lose!"
+        text1 = title_font.render('Game Over!', True, RED)
+        text2 = title_font.render('You Lose!', True, RED)
+        screen.blit(text1, text1.get_rect(center=(mid_x, mid_y - line_gap)))
+        screen.blit(text2, text2.get_rect(center=(mid_x, mid_y)))
 
-    min_text = font.render(f'Min steps: {min_steps}', True, ORANGE)
-    screen.blit(min_text, (WIDTH//2 - min_text.get_width()//2, HEIGHT//2 + 40))
+    # Các dòng thông tin phụ
+    steps_text = text_font.render(f'Steps: {steps}', True, BLUE)
+    screen.blit(steps_text, steps_text.get_rect(center=(mid_x, mid_y + line_gap)))
 
-    replay_btn = font.render(f'Play Level {level}', True, GREEN)
-    quit_btn = font.render('Quit', True, RED)
+    min_text = text_font.render(f'Min steps: {min_steps}', True, ORANGE)
+    screen.blit(min_text, min_text.get_rect(center=(mid_x, mid_y + line_gap * 2)))
 
-    screen.blit(replay_btn, (WIDTH//2 - replay_btn.get_width()//2, HEIGHT//2 + 90))
-    screen.blit(quit_btn, (WIDTH//2 - quit_btn.get_width()//2, HEIGHT//2 + 140))
+    # Nút chơi lại
+    replay_btn = text_font.render(f'Play Level {level}', True, GREEN)
+    replay_rect = replay_btn.get_rect(center=(mid_x, mid_y + line_gap * 3))
+    screen.blit(replay_btn, replay_rect)
+
+    # Nút thoát
+    quit_btn = text_font.render('Quit', True, RED)
+    quit_rect = quit_btn.get_rect(center=(mid_x, mid_y + line_gap * 4))
+    screen.blit(quit_btn, quit_rect)
+
     pygame.display.flip()
 
+    # Bắt sự kiện click
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit(); sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 x, y = pygame.mouse.get_pos()
-                if WIDTH//2 - replay_btn.get_width()//2 <= x <= WIDTH//2 + replay_btn.get_width()//2:
-                    if HEIGHT//2 + 90 <= y <= HEIGHT//2 + 130:
-                        return True
-                if WIDTH//2 - quit_btn.get_width()//2 <= x <= WIDTH//2 + quit_btn.get_width()//2:
-                    if HEIGHT//2 + 140 <= y <= HEIGHT//2 + 180:
-                        pygame.quit(); sys.exit()
+                if replay_rect.collidepoint(x, y):
+                    return True
+                if quit_rect.collidepoint(x, y):
+                    pygame.quit(); sys.exit()
