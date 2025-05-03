@@ -1,4 +1,5 @@
 import pygame
+import os
 from settings import *
 from maze.maze import generate_maze, draw_grid
 from maze.a_star import a_star
@@ -7,7 +8,6 @@ from game.bfs import bfs
 from game.ui import show_menu, show_game_over
 import time
 import random
-
 
 def get_random_positions():
     while True:
@@ -18,7 +18,8 @@ def get_random_positions():
 
 def get_min_steps(grid, start, end):
     path = a_star(grid, start, end)
-    return len(path) if path else 9999  # Tránh lỗi nếu không có đường đi
+    print(f"Min steps calculated: {len(path) if path else 'No path'}")  # Debug
+    return len(path) if path else 9999, path  # Trả về cả min_steps và path
 
 def run_game(screen):
     clock = pygame.time.Clock()
@@ -34,12 +35,9 @@ def run_game(screen):
                 if bfs(grid, start_pos, end_pos):
                     break
 
-
-
-            path = a_star(grid, start_pos, end_pos)
+            min_steps, path = get_min_steps(grid, start_pos, end_pos)
             if not path:
                 continue  # Tạo lại maze nếu không tìm được đường đi bằng A*
-            min_steps = len(path)
 
             player = Player(*start_pos)
             visited_tiles = set()
@@ -73,16 +71,16 @@ def run_game(screen):
                             steps += 1
                             visited_tiles.add((player.x, player.y))
 
-
-                screen.fill(WHITE)
                 draw_grid(screen, grid, [], start_pos, end_pos, visited_tiles)
                 player.draw(screen)
 
-                font = pygame.font.Font(None, 36)
+                # Vẽ thanh trên cùng và thông tin
+                pygame.draw.rect(screen, (200, 200, 200), (0, 0, WIDTH, 50))  # Thanh xám nhạt, cao 50 pixel
+                font = pygame.font.Font(None, 24)  # Font nhỏ hơn để vừa với thanh
                 screen.blit(font.render(f'Level: {CURRENT_LEVEL}', True, PURPLE), (10, 10))
-                screen.blit(font.render(f'Min steps: {min_steps}', True, ORANGE), (10, 50))
-                screen.blit(font.render(f'Steps: {steps}', True, BLUE), (10, 90))
-                screen.blit(font.render(f'Time left: {remaining_time}s', True, RED), (10, 130))
+                screen.blit(font.render(f'Min steps: {min_steps}', True, ORANGE), (100, 10))
+                screen.blit(font.render(f'Steps: {steps}', True, BLUE), (200, 10))
+                screen.blit(font.render(f'Time left: {remaining_time}s', True, RED), (300, 10))
 
                 if (player.x, player.y) == end_pos:
                     CURRENT_LEVEL += 1  # Tăng level
