@@ -18,8 +18,8 @@ def generate_maze():
     grid = [[0 for _ in range(GRID_HEIGHT)] for _ in range(GRID_WIDTH)]
     for x in range(GRID_WIDTH):
         for y in range(GRID_HEIGHT):
-            # sinh chướng ngại vật 20%, trừ START và END
-            if random.random() < 0.2 and (x, y) != START_POS and (x, y) != END_POS:
+            # Sinh chướng ngại vật 20%, trừ START và END
+            if random.random() < OBSTACLE_RATIO and (x, y) != START_POS and (x, y) != END_POS:
                 grid[x][y] = 1
     return grid
 
@@ -52,4 +52,4 @@ def draw_grid(screen, grid, path, start, end):
     sx, sy = start
     ex, ey = end
     pygame.draw.rect(screen, GREEN, pygame.Rect(sx * CELL_SIZE, sy * CELL_SIZE, CELL_SIZE, CELL_SIZE))
-    pygame.draw.rect(screen, RED,   pygame.Rect(ex * CELL_SIZE, ey * CELL_SIZE, CELL_SIZE, CELL_SIZE))
+    pygame.draw.rect(screen, RED, pygame.Rect(ex * CELL_SIZE, ey * CELL_SIZE, CELL_SIZE, CELL_SIZE))
