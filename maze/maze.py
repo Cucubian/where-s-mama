@@ -9,7 +9,7 @@ ROCK_IMG = pygame.transform.scale(ROCK_IMG, (CELL_SIZE, CELL_SIZE))
 GRASS_IMG = pygame.image.load('assets/images/grass.png')
 GRASS_IMG = pygame.transform.scale(GRASS_IMG, (CELL_SIZE, CELL_SIZE))
 
-FOOTPRINT_IMG = pygame.image.load('assets/images/footprint.png')
+FOOTPRINT_IMG = pygame.image.load('assets/images/co.png')
 FOOTPRINT_IMG = pygame.transform.scale(FOOTPRINT_IMG, (CELL_SIZE, CELL_SIZE))
 
 def generate_maze(start_pos, end_pos):

@@ -4,15 +4,19 @@ import sys
 from settings import WIDTH, HEIGHT, WHITE, BLUE, GREEN, RED, ORANGE  # Thêm ORANGE
 
 def show_menu(screen, level=1):
-    background = pygame.image.load('assets/images/mother.png')  # Đường dẫn đến ảnh nền
+    background = pygame.image.load('assets/images/thongnhat.png')  # Đường dẫn đến ảnh nền
     background = pygame.transform.scale(background, (WIDTH, HEIGHT))  # Đảm bảo vừa với màn hình
 
     
     screen.blit(background, (0, 0))
 
-    font = pygame.font.Font(None, 74)
-    title = font.render(f'Maze Runner - Level {level}', True, BLUE)
-    screen.blit(title, (WIDTH//2 - title.get_width()//2, HEIGHT//4))
+    font = pygame.font.Font(None, 50)
+    title1 = font.render('April 30: Road to Reunification', True, BLUE)
+    title2 = font.render(f'Level {level}', True, BLUE)
+
+    screen.blit(title1, (WIDTH//2 - title1.get_width()//2, HEIGHT//4 - 30))
+    screen.blit(title2, (WIDTH//2 - title2.get_width()//2, HEIGHT//4 + 30))
+
 
     font = pygame.font.Font(None, 36)
     start_button = font.render('Start Game', True, GREEN)
@@ -36,7 +40,7 @@ def show_menu(screen, level=1):
                         pygame.quit(); sys.exit()
 
 def show_game_over(screen, won, steps, min_steps, level=1):
-    background = pygame.image.load('assets/images/images.png')
+    background = pygame.image.load('assets/images/back_end.jpg')
     background = pygame.transform.scale(background, (WIDTH, HEIGHT))
     screen.blit(background, (0, 0))
     title_font = pygame.font.Font(None, 60)  # Font lớn cho tiêu đề
