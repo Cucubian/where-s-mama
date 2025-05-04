@@ -18,8 +18,12 @@ def get_random_positions():
 
 def get_min_steps(grid, start, end):
     path = a_star(grid, start, end)
-    print(f"Min steps calculated: {len(path) if path else 'No path'}")  # Debug
-    return len(path) if path else 9999, path  # Trả về cả min_steps và path
+    print(f"Min steps calculated (before adjustment): {len(path) if path else 'No path'}")  # Debug
+    if path:
+        print(f"Path: {path}")  # In đường đi để debug
+        # Trả về số bước (số ô - 1), không tính ô bắt đầu
+        return len(path) - 1 if len(path) > 1 else 0, path
+    return 9999, path  # Trả về cả min_steps và path
 
 def run_game(screen):
     clock = pygame.time.Clock()

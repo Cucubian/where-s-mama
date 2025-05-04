@@ -6,6 +6,8 @@ from settings import WIDTH, HEIGHT, WHITE, BLUE, GREEN, RED, ORANGE  # Thêm ORA
 def show_menu(screen, level=1):
     background = pygame.image.load('assets/images/mother.png')  # Đường dẫn đến ảnh nền
     background = pygame.transform.scale(background, (WIDTH, HEIGHT))  # Đảm bảo vừa với màn hình
+
+    
     screen.blit(background, (0, 0))
 
     font = pygame.font.Font(None, 74)
@@ -34,7 +36,9 @@ def show_menu(screen, level=1):
                         pygame.quit(); sys.exit()
 
 def show_game_over(screen, won, steps, min_steps, level=1):
-    screen.fill(WHITE)
+    background = pygame.image.load('assets/images/images.png')
+    background = pygame.transform.scale(background, (WIDTH, HEIGHT))
+    screen.blit(background, (0, 0))
     title_font = pygame.font.Font(None, 60)  # Font lớn cho tiêu đề
     text_font = pygame.font.Font(None, 36)   # Font nhỏ cho thông tin
     mid_x = WIDTH // 2
