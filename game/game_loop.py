@@ -1,5 +1,6 @@
 import pygame
 import os
+import sys
 from settings import *
 from maze.maze import generate_maze, draw_grid
 from maze.a_star import a_star
@@ -8,7 +9,23 @@ from game.bfs import bfs
 from game.ui import show_menu, show_game_over
 import time
 import random
-import sys
+
+# Đường dẫn đến file lưu high score
+HIGHSCORE_FILE = os.path.join('assets', 'highscore.txt')
+
+def load_highscore():
+    """Đọc high score từ file, nếu không có file thì trả về 0 (giá trị mặc định)"""
+    try:
+        with open(HIGHSCORE_FILE, 'r') as file:
+            score = int(file.read().strip())
+            return max(0, score)  # Đảm bảo không âm
+    except (FileNotFoundError, ValueError):
+        return 0  # Giá trị mặc định nếu không có file hoặc file lỗi
+
+def save_highscore(highscore):
+    """Ghi high score vào file"""
+    with open(HIGHSCORE_FILE, 'w') as file:
+        file.write(str(highscore))
 
 def get_random_positions():
     while True:
@@ -30,6 +47,7 @@ def run_game(screen):
     clock = pygame.time.Clock()
     global CURRENT_LEVEL
     CURRENT_LEVEL = 1  # Bắt đầu từ level 1
+    highscore = load_highscore()  # Đọc high score khi bắt đầu trò chơi (số màn cao nhất)
 
     while True:
         # Chỉ hiển thị menu lần đầu tiên hoặc khi thua/hết thời gian
@@ -97,8 +115,11 @@ def run_game(screen):
 
                     # Kiểm tra khi người chơi thắng
                     if (player.x, player.y) == end_pos:
-                        CURRENT_LEVEL += 1  # Tăng level
-                        if show_game_over(screen, True, steps, min_steps, CURRENT_LEVEL):
+                        if CURRENT_LEVEL > highscore:  # Cập nhật high score nếu đạt level cao hơn
+                            highscore = CURRENT_LEVEL
+                            save_highscore(highscore)
+                        CURRENT_LEVEL += 1  # Tăng level sau khi cập nhật highscore
+                        if show_game_over(screen, True, steps, min_steps, CURRENT_LEVEL, highscore):
                             running = False  # Thoát vòng lặp để tạo maze mới mà không hiển thị show_menu
                         else:
                             pygame.quit()
@@ -106,7 +127,7 @@ def run_game(screen):
                     # Kiểm tra khi người chơi thua (vượt quá số bước tối thiểu)
                     elif steps >= min_steps:
                         CURRENT_LEVEL = 1  # Reset về level 1 khi thua
-                        if show_game_over(screen, False, steps, min_steps, CURRENT_LEVEL):
+                        if show_game_over(screen, False, steps, min_steps, CURRENT_LEVEL, highscore):
                             running = False  # Thoát vòng lặp để hiển thị show_menu và tạo maze mới
                         else:
                             pygame.quit()
@@ -114,7 +135,7 @@ def run_game(screen):
                     # Kiểm tra khi hết thời gian
                     elif elapsed_time >= time_limit:
                         CURRENT_LEVEL = 1  # Reset về level 1 khi hết thời gian
-                        if show_game_over(screen, False, steps, min_steps, CURRENT_LEVEL):
+                        if show_game_over(screen, False, steps, min_steps, CURRENT_LEVEL, highscore):
                             running = False  # Thoát vòng lặp để hiển thị show_menu và tạo maze mới
                         else:
                             pygame.quit()
