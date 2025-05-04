@@ -37,51 +37,51 @@ def show_menu(screen, level=1):
                     if HEIGHT//2 + 50 <= y <= HEIGHT//2 + 90:
                         pygame.quit(); sys.exit()
 
-def show_game_over(screen, won, steps, min_steps, level=1):
-    background = pygame.image.load('assets/images/back_end.jpg')
+def show_game_over(screen, won, steps, min_steps, level, highscore):
+    # xử lý thêm highscore ở đây nếu cần
+
+    # Chọn ảnh nền khác nhau tùy kết quả
+    if won:
+        background = pygame.image.load('assets/images/monkeyCry.png')  # ảnh khi thắng
+    else:
+        background = pygame.image.load('assets/images/monkeyLaugh.png')  # ảnh khi thua
     background = pygame.transform.scale(background, (WIDTH, HEIGHT))
     screen.blit(background, (0, 0))
-    title_font = pygame.font.Font(None, 60)  # Font lớn cho tiêu đề
-    text_font = pygame.font.Font(None, 36)   # Font nhỏ cho thông tin
+
+    title_font = pygame.font.Font(None, 60)
+    text_font = pygame.font.Font(None, 36)
     mid_x = WIDTH // 2
     mid_y = HEIGHT // 2
-    line_gap = 50  # khoảng cách giữa các dòng
+    line_gap = 50
 
     if won:
-        # Chỉ hiện 1 dòng khi thắng
         win_text = title_font.render('You Win!', True, GREEN)
         screen.blit(win_text, win_text.get_rect(center=(mid_x, mid_y - line_gap)))
     else:
-        # Hai dòng: "Game Over!" và "You Lose!"
         text1 = title_font.render('Game Over!', True, RED)
         text2 = title_font.render('You Lose!', True, RED)
         screen.blit(text1, text1.get_rect(center=(mid_x, mid_y - line_gap)))
         screen.blit(text2, text2.get_rect(center=(mid_x, mid_y)))
 
-    # Các dòng thông tin phụ
     steps_text = text_font.render(f'Steps: {steps}', True, BLUE)
     screen.blit(steps_text, steps_text.get_rect(center=(mid_x, mid_y + line_gap)))
 
     min_text = text_font.render(f'Min steps: {min_steps}', True, ORANGE)
     screen.blit(min_text, min_text.get_rect(center=(mid_x, mid_y + line_gap * 2)))
 
-    # Hiển thị high score (level cao nhất đạt được)
     highscore_text = text_font.render(f'High score: {highscore}', True, PURPLE)
     screen.blit(highscore_text, highscore_text.get_rect(center=(mid_x, mid_y + line_gap * 3)))
 
-    # Nút chơi lại
     replay_btn = text_font.render(f'Play Level {level}', True, GREEN)
     replay_rect = replay_btn.get_rect(center=(mid_x, mid_y + line_gap * 4))
     screen.blit(replay_btn, replay_rect)
 
-    # Nút thoát
     quit_btn = text_font.render('Quit', True, RED)
     quit_rect = quit_btn.get_rect(center=(mid_x, mid_y + line_gap * 5))
     screen.blit(quit_btn, quit_rect)
 
     pygame.display.flip()
 
-    # Bắt sự kiện click
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -93,7 +93,6 @@ def show_game_over(screen, won, steps, min_steps, level=1):
                 if quit_rect.collidepoint(x, y):
                     pygame.quit(); sys.exit()
 
-        # Kiểm tra nếu chuột đang trỏ vào nút hợp lệ thì đổi con trỏ
         mouse_pos = pygame.mouse.get_pos()
         if replay_rect.collidepoint(mouse_pos) or quit_rect.collidepoint(mouse_pos):
             pygame.mouse.set_system_cursor(pygame.SYSTEM_CURSOR_HAND)
