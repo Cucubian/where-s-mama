@@ -9,8 +9,11 @@ ROCK_IMG = pygame.transform.scale(ROCK_IMG, (CELL_SIZE, CELL_SIZE))
 GRASS_IMG = pygame.image.load('assets/images/grass.png')
 GRASS_IMG = pygame.transform.scale(GRASS_IMG, (CELL_SIZE, CELL_SIZE))
 
-FOOTPRINT_IMG = pygame.image.load('assets/images/co.png')
+FOOTPRINT_IMG = pygame.image.load('assets/images/footprint.png')
 FOOTPRINT_IMG = pygame.transform.scale(FOOTPRINT_IMG, (CELL_SIZE, CELL_SIZE))
+
+END_IMG = pygame.image.load('assets/images/mother1.jpg')  # Thay đổi đường dẫn nếu cần
+END_IMG = pygame.transform.scale(END_IMG, (CELL_SIZE, CELL_SIZE))
 
 def generate_maze(start_pos, end_pos):
     """
@@ -52,9 +55,10 @@ def draw_grid(screen, grid, path, start, end, visited_tiles):
 
             pygame.draw.rect(screen, GRAY, rect, 1)
 
-    # Vẽ start và end
+    # Vẽ start
     sx, sy = start
-    ex, ey = end
     pygame.draw.rect(screen, GREEN, pygame.Rect(sx * CELL_SIZE, sy * CELL_SIZE + TOP_BAR_HEIGHT, CELL_SIZE, CELL_SIZE))
-    pygame.draw.rect(screen, RED, pygame.Rect(ex * CELL_SIZE, ey * CELL_SIZE + TOP_BAR_HEIGHT, CELL_SIZE, CELL_SIZE))
 
+    # Vẽ end với ảnh
+    ex, ey = end
+    screen.blit(END_IMG, pygame.Rect(ex * CELL_SIZE, ey * CELL_SIZE + TOP_BAR_HEIGHT, CELL_SIZE, CELL_SIZE))
