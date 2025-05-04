@@ -1,13 +1,12 @@
 # === game/ui.py ===
 import pygame
 import sys
-from settings import WIDTH, HEIGHT, WHITE, BLUE, GREEN, RED, ORANGE  # Thêm ORANGE
+from settings import WIDTH, HEIGHT, WHITE, BLUE, GREEN, RED, ORANGE, PURPLE  # Thêm PURPLE
 
 def show_menu(screen, level=1):
     background = pygame.image.load('assets/images/thongnhat.png')  # Đường dẫn đến ảnh nền
     background = pygame.transform.scale(background, (WIDTH, HEIGHT))  # Đảm bảo vừa với màn hình
 
-    
     screen.blit(background, (0, 0))
 
     font = pygame.font.Font(None, 50)
@@ -16,7 +15,6 @@ def show_menu(screen, level=1):
 
     screen.blit(title1, (WIDTH//2 - title1.get_width()//2, HEIGHT//4 - 30))
     screen.blit(title2, (WIDTH//2 - title2.get_width()//2, HEIGHT//4 + 30))
-
 
     font = pygame.font.Font(None, 36)
     start_button = font.render('Start Game', True, GREEN)
@@ -39,7 +37,7 @@ def show_menu(screen, level=1):
                     if HEIGHT//2 + 50 <= y <= HEIGHT//2 + 90:
                         pygame.quit(); sys.exit()
 
-def show_game_over(screen, won, steps, min_steps, level=1):
+def show_game_over(screen, won, steps, min_steps, level=1, highscore=0):
     background = pygame.image.load('assets/images/back_end.jpg')
     background = pygame.transform.scale(background, (WIDTH, HEIGHT))
     screen.blit(background, (0, 0))
@@ -67,14 +65,18 @@ def show_game_over(screen, won, steps, min_steps, level=1):
     min_text = text_font.render(f'Min steps: {min_steps}', True, ORANGE)
     screen.blit(min_text, min_text.get_rect(center=(mid_x, mid_y + line_gap * 2)))
 
+    # Hiển thị high score (level cao nhất đạt được)
+    highscore_text = text_font.render(f'High score: {highscore}', True, PURPLE)
+    screen.blit(highscore_text, highscore_text.get_rect(center=(mid_x, mid_y + line_gap * 3)))
+
     # Nút chơi lại
     replay_btn = text_font.render(f'Play Level {level}', True, GREEN)
-    replay_rect = replay_btn.get_rect(center=(mid_x, mid_y + line_gap * 3))
+    replay_rect = replay_btn.get_rect(center=(mid_x, mid_y + line_gap * 4))
     screen.blit(replay_btn, replay_rect)
 
     # Nút thoát
     quit_btn = text_font.render('Quit', True, RED)
-    quit_rect = quit_btn.get_rect(center=(mid_x, mid_y + line_gap * 4))
+    quit_rect = quit_btn.get_rect(center=(mid_x, mid_y + line_gap * 5))
     screen.blit(quit_btn, quit_rect)
 
     pygame.display.flip()
