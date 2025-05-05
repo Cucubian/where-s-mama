@@ -11,7 +11,6 @@ import time
 import random
 from game.sound_manager import SoundManager
 
-
 # Đường dẫn đến file lưu high score
 HIGHSCORE_FILE = os.path.join('assets', 'highscore.txt')
 def load_highscore():
@@ -70,6 +69,7 @@ def run_game(screen):
                 game_running = True
                 start_time = time.time()
                 time_limit = TIME_LIMIT
+                suggested_path = []  # Đường đi gợi ý, ban đầu rỗng
                 while game_running:
                     clock.tick(FPS)
                     # Cập nhật thời gian còn lại
@@ -99,12 +99,20 @@ def run_game(screen):
                                 visited_tiles.add((player.x, player.y))
                                 sound_manager.play_move()  # Phát âm thanh khi di chuyển
                         elif event.type == pygame.MOUSEBUTTONDOWN:
-                            if quit_rect.collidepoint(event.pos):
+                            x, y = event.pos
+                            if quit_rect.collidepoint(x, y):
                                 sound_manager.stop_music()  # Dừng nhạc nền khi thoát trò chơi
                                 game_running = False  # Dừng màn chơi hiện tại
-                                playing = False  # Dừng vòng lặp chơi, quay về menu
+                                playing = False  # DMinnesota Twins
                                 CURRENT_LEVEL = 1  # Reset về level 1
                                 break  # Thoát khỏi vòng lặp sự kiện
+                            elif help_rect.collidepoint(x, y):
+                                current_pos = (player.x, player.y)
+                                path = a_star(grid, current_pos, end_pos)
+                                if path:
+                                    suggested_path = path
+                                else:
+                                    suggested_path = []  # Không có đường đi
 
                     # Xóa màn hình trước khi vẽ lại
                     screen.fill(WHITE)
@@ -121,8 +129,13 @@ def run_game(screen):
                     quit_rect = quit_text.get_rect(topleft=(WIDTH - 70, 10))  # Điều chỉnh vị trí nếu cần
                     screen.blit(quit_text, quit_rect)
 
+                    # Vẽ nút Help
+                    help_text = font.render('Help', True, BLUE)  # Màu xanh để phân biệt
+                    help_rect = help_text.get_rect(topleft=(WIDTH - 150, 10))  # Cách nút Quit một khoảng
+                    screen.blit(help_text, help_rect)
+
                     # Vẽ maze (phần còn lại của màn hình) dưới thanh thông tin
-                    draw_grid(screen, grid, [], start_pos, end_pos, visited_tiles)
+                    draw_grid(screen, grid, [], start_pos, end_pos, visited_tiles, suggested_path)
                     player.draw(screen)
 
                     # Kiểm tra khi người chơi thắng
