@@ -9,6 +9,9 @@ from game.bfs import bfs
 from game.ui import show_menu, show_game_over
 import time
 import random
+from game.sound_manager import SoundManager
+
+
 # Đường dẫn đến file lưu high score
 HIGHSCORE_FILE = os.path.join('assets', 'highscore.txt')
 def load_highscore():
@@ -43,6 +46,11 @@ def run_game(screen):
     CURRENT_LEVEL = 1  # Bắt đầu từ level 1
     highscore = load_highscore()  # Đọc high score khi bắt đầu trò chơi (số màn cao nhất)
     running_menu = True
+    
+    # Khởi tạo SoundManager
+    sound_manager = SoundManager()
+    sound_manager.play_music()  # Phát nhạc nền khi bắt đầu trò chơi
+
     while running_menu:
         if show_menu(screen, CURRENT_LEVEL):
             playing = True
@@ -68,6 +76,7 @@ def run_game(screen):
                     current_time = time.time()
                     elapsed_time = current_time - start_time
                     remaining_time = max(0, int(time_limit - elapsed_time))
+                    
                     for event in pygame.event.get():
                         if event.type == pygame.QUIT:
                             pygame.quit()
@@ -76,21 +85,26 @@ def run_game(screen):
                             if event.key == pygame.K_LEFT and player.move(-1, 0, grid):
                                 steps += 1
                                 visited_tiles.add((player.x, player.y))
+                                sound_manager.play_move()  # Phát âm thanh khi di chuyển
                             elif event.key == pygame.K_RIGHT and player.move(1, 0, grid):
                                 steps += 1
                                 visited_tiles.add((player.x, player.y))
+                                sound_manager.play_move()  # Phát âm thanh khi di chuyển
                             elif event.key == pygame.K_UP and player.move(0, -1, grid):
                                 steps += 1
                                 visited_tiles.add((player.x, player.y))
+                                sound_manager.play_move()  # Phát âm thanh khi di chuyển
                             elif event.key == pygame.K_DOWN and player.move(0, 1, grid):
                                 steps += 1
                                 visited_tiles.add((player.x, player.y))
+                                sound_manager.play_move()  # Phát âm thanh khi di chuyển
                         elif event.type == pygame.MOUSEBUTTONDOWN:
                             if quit_rect.collidepoint(event.pos):
+                                sound_manager.stop_music()  # Dừng nhạc nền khi thoát trò chơi
                                 game_running = False  # Dừng màn chơi hiện tại
-                                playing = False # Dừng vòng lặp chơi, quay về menu
-                                CURRENT_LEVEL = 1 # Reset về level 1
-                                break # Thoát khỏi vòng lặp sự kiện
+                                playing = False  # Dừng vòng lặp chơi, quay về menu
+                                CURRENT_LEVEL = 1  # Reset về level 1
+                                break  # Thoát khỏi vòng lặp sự kiện
 
                     # Xóa màn hình trước khi vẽ lại
                     screen.fill(WHITE)
@@ -113,6 +127,7 @@ def run_game(screen):
 
                     # Kiểm tra khi người chơi thắng
                     if (player.x, player.y) == end_pos:
+                        sound_manager.play_win()  # Phát âm thanh khi thắng
                         if CURRENT_LEVEL > highscore:  # Cập nhật high score nếu đạt level cao hơn
                             highscore = CURRENT_LEVEL
                             save_highscore(highscore)
@@ -122,16 +137,20 @@ def run_game(screen):
                         else:
                             pygame.quit()
                             sys.exit()  # Thoát nếu người chơi chọn Quit từ game over
+
                     # Kiểm tra khi người chơi thua (vượt quá số bước tối thiểu)
                     elif steps >= min_steps:
+                        sound_manager.play_lose()  # Phát âm thanh khi thua
                         CURRENT_LEVEL = 1  # Reset về level 1 khi thua
                         if show_game_over(screen, False, steps, min_steps, CURRENT_LEVEL, highscore):
                             game_running = False
                         else:
                             pygame.quit()
                             sys.exit()  # Thoát nếu người chơi chọn Quit từ game over
+
                     # Kiểm tra khi hết thời gian
                     elif elapsed_time >= time_limit:
+                        sound_manager.play_lose()  # Phát âm thanh khi hết thời gian
                         CURRENT_LEVEL = 1  # Reset về level 1 khi hết thời gian
                         if show_game_over(screen, False, steps, min_steps, CURRENT_LEVEL, highscore):
                             game_running = False
@@ -143,4 +162,5 @@ def run_game(screen):
                 # Khi playing là False (do bấm Quit), vòng lặp while playing kết thúc
                 # Vòng lặp while running_menu sẽ gọi lại show_menu
         else:
-            running_menu = False # Thoát khỏi vòng lặp menu nếu người chơi chọn Quit ở menu chính
+            sound_manager.stop_music()  # Dừng nhạc nền khi quay về menu
+            running_menu = False  # Thoát khỏi vòng lặp menu nếu người chơi chọn Quit ở menu chính

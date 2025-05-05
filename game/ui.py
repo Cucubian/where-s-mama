@@ -42,9 +42,9 @@ def show_game_over(screen, won, steps, min_steps, level, highscore):
 
     # Chọn ảnh nền khác nhau tùy kết quả
     if won:
-        background = pygame.image.load('assets/images/monkeyCry.png')  # ảnh khi thắng
+        background = pygame.image.load('assets/images/monkeyLaugh.png')  # ảnh khi thắng
     else:
-        background = pygame.image.load('assets/images/monkeyLaugh.png')  # ảnh khi thua
+        background = pygame.image.load('assets/images/monkeyCry.png')  # ảnh khi thua
     background = pygame.transform.scale(background, (WIDTH, HEIGHT))
     screen.blit(background, (0, 0))
 

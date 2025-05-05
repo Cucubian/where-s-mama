@@ -10,5 +10,6 @@ def main():
     pygame.display.set_caption("Where's Mama - Little Monkey")
     run_game(screen)
 
+
 if __name__ == "__main__":
     main()
