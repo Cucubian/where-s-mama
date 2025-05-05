@@ -31,11 +31,12 @@ def generate_maze(start_pos, end_pos):
 
     return grid
 
-def draw_grid(screen, grid, path, start, end, visited_tiles):
+def draw_grid(screen, grid, path, start, end, visited_tiles, suggested_path=[]):
     """
     Vẽ grid lên screen:
     - grid[x][y] == 1 → blit rock image
     - (x,y) trong path → highlight đường đi xanh (sử dụng cỏ)
+    - (x,y) trong suggested_path → vẽ footprint
     - ngược lại fill cỏ (grass image)
     Cuối cùng vẽ viền ô (GRAY) và 2 ô start/end.
     """
@@ -45,7 +46,8 @@ def draw_grid(screen, grid, path, start, end, visited_tiles):
 
             if (x, y) in visited_tiles:
                 screen.blit(FOOTPRINT_IMG, rect)
-
+            elif (x, y) in suggested_path:
+                screen.blit(FOOTPRINT_IMG, rect)  # Vẽ footprint cho đường đi gợi ý
             elif grid[x][y] == 1:
                 screen.blit(ROCK_IMG, rect)
             elif (x, y) in path:
