@@ -11,9 +11,10 @@ def show_menu(screen, level=1):
 
     screen.blit(background, (0, 0))
 
-    font = get_font(32)
-    title1 = font.render("Where's Mama - Little Monkey", True, BLUE)
-    title2 = font.render(f'Level {level}', True, BLUE)
+    font = get_font(36)
+    YELLOW = (255, 255, 0)  # Định nghĩa màu vàng
+    title1 = font.render("Where's Mama - Little Monkey", True, YELLOW)
+    title2 = font.render(f'Level {level}', True, GREEN)
 
     screen.blit(title1, (WIDTH//2 - title1.get_width()//2, HEIGHT//4 - 30))
     screen.blit(title2, (WIDTH//2 - title2.get_width()//2, HEIGHT//4 + 30))
