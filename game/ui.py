@@ -1,29 +1,44 @@
-# === game/ui.py ===
 import pygame
 import sys
-from settings import WIDTH, HEIGHT, WHITE, BLUE, GREEN, RED, ORANGE, PURPLE  # Thêm PURPLE
+from settings import WIDTH, HEIGHT, WHITE, BLUE, GREEN, RED, ORANGE, PURPLE
 from settings import get_font
 
+def show_menu(screen, level=1, sound_manager=None):
+    background = pygame.image.load('assets/images/mother.png')
+    background = pygame.transform.scale(background, (WIDTH, HEIGHT))
 
-def show_menu(screen, level=1):
-    background = pygame.image.load('assets/images/mother.png')  # Đường dẫn đến ảnh nền
-    background = pygame.transform.scale(background, (WIDTH, HEIGHT))  # Đảm bảo vừa với màn hình
-
-    screen.blit(background, (0, 0))
-
-    font = get_font(32)
+    font = pygame.font.Font(None, 50)
     title1 = font.render("Where's Mama - Little Monkey", True, BLUE)
     title2 = font.render(f'Level {level}', True, BLUE)
 
-    screen.blit(title1, (WIDTH//2 - title1.get_width()//2, HEIGHT//4 - 30))
-    screen.blit(title2, (WIDTH//2 - title2.get_width()//2, HEIGHT//4 + 30))
-
-    font = get_font(24)
+    font = pygame.font.Font(None, 36)
     start_button = font.render('Start Game', True, GREEN)
     quit_button = font.render('Quit', True, RED)
 
-    screen.blit(start_button, (WIDTH//2 - start_button.get_width()//2, HEIGHT//2))
-    screen.blit(quit_button, (WIDTH//2 - quit_button.get_width()//2, HEIGHT//2 + 50))
+    # Define rects for buttons
+    start_rect = start_button.get_rect(center=(WIDTH//2, HEIGHT//2))
+    quit_rect = quit_button.get_rect(center=(WIDTH//2, HEIGHT//2 + 50))
+
+    # Load speaker icons
+    speaker_on = pygame.image.load('assets/images/speaker_on.png')
+    speaker_on = pygame.transform.scale(speaker_on, (40, 40))
+    speaker_off = pygame.image.load('assets/images/speaker_off.png')
+    speaker_off = pygame.transform.scale(speaker_off, (40, 40))
+
+    # Determine initial speaker icon
+    if sound_manager.muted:
+        speaker_icon = speaker_off
+    else:
+        speaker_icon = speaker_on
+    speaker_rect = speaker_icon.get_rect(topright=(WIDTH - 10, 10))
+
+    # Initial draw
+    screen.blit(background, (0, 0))
+    screen.blit(title1, title1.get_rect(center=(WIDTH//2, HEIGHT//4 - 30)))
+    screen.blit(title2, title2.get_rect(center=(WIDTH//2, HEIGHT//4 + 30)))
+    screen.blit(start_button, start_rect)
+    screen.blit(quit_button, quit_rect)
+    screen.blit(speaker_icon, speaker_rect)
     pygame.display.flip()
 
     while True:
@@ -31,22 +46,39 @@ def show_menu(screen, level=1):
             if event.type == pygame.QUIT:
                 pygame.quit(); sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
-                x, y = pygame.mouse.get_pos()
-                if WIDTH//2 - start_button.get_width()//2 <= x <= WIDTH//2 + start_button.get_width()//2:
-                    if HEIGHT//2 <= y <= HEIGHT//2 + 40:
-                        return True
-                if WIDTH//2 - quit_button.get_width()//2 <= x <= WIDTH//2 + quit_button.get_width()//2:
-                    if HEIGHT//2 + 50 <= y <= HEIGHT//2 + 90:
-                        pygame.quit(); sys.exit()
+                x, y = event.pos
+                if start_rect.collidepoint(x, y):
+                    return True
+                elif quit_rect.collidepoint(x, y):
+                    pygame.quit(); sys.exit()
+                elif speaker_rect.collidepoint(x, y):
+                    sound_manager.toggle_mute()
+                    # Update speaker icon
+                    if sound_manager.muted:
+                        speaker_icon = speaker_off
+                    else:
+                        speaker_icon = speaker_on
+                    # Redraw menu
+                    screen.blit(background, (0, 0))
+                    screen.blit(title1, title1.get_rect(center=(WIDTH//2, HEIGHT//4 - 30)))
+                    screen.blit(title2, title2.get_rect(center=(WIDTH//2, HEIGHT//4 + 30)))
+                    screen.blit(start_button, start_rect)
+                    screen.blit(quit_button, quit_rect)
+                    screen.blit(speaker_icon, speaker_rect)
+                    pygame.display.flip()
+
+        # Cursor handling
+        mouse_pos = pygame.mouse.get_pos()
+        if start_rect.collidepoint(mouse_pos) or quit_rect.collidepoint(mouse_pos) or speaker_rect.collidepoint(mouse_pos):
+            pygame.mouse.set_system_cursor(pygame.SYSTEM_CURSOR_HAND)
+        else:
+            pygame.mouse.set_system_cursor(pygame.SYSTEM_CURSOR_ARROW)
 
 def show_game_over(screen, won, steps, min_steps, level, highscore):
-    # xử lý thêm highscore ở đây nếu cần
-
-    # Chọn ảnh nền khác nhau tùy kết quả
     if won:
-        background = pygame.image.load('assets/images/monkeyLaugh.png')  # ảnh khi thắng
+        background = pygame.image.load('assets/images/monkeyLaugh.png')
     else:
-        background = pygame.image.load('assets/images/monkeyCry.png')  # ảnh khi thua
+        background = pygame.image.load('assets/images/monkeyCry.png')
     background = pygame.transform.scale(background, (WIDTH, HEIGHT))
     screen.blit(background, (0, 0))
 
