@@ -2,6 +2,8 @@
 import pygame
 import sys
 from settings import WIDTH, HEIGHT, WHITE, BLUE, GREEN, RED, ORANGE, PURPLE  # Thêm PURPLE
+from settings import get_font
+
 
 def show_menu(screen, level=1):
     background = pygame.image.load('assets/images/mother.png')  # Đường dẫn đến ảnh nền
@@ -9,14 +11,14 @@ def show_menu(screen, level=1):
 
     screen.blit(background, (0, 0))
 
-    font = pygame.font.Font(None, 50)
+    font = get_font(32)
     title1 = font.render("Where's Mama - Little Monkey", True, BLUE)
     title2 = font.render(f'Level {level}', True, BLUE)
 
     screen.blit(title1, (WIDTH//2 - title1.get_width()//2, HEIGHT//4 - 30))
     screen.blit(title2, (WIDTH//2 - title2.get_width()//2, HEIGHT//4 + 30))
 
-    font = pygame.font.Font(None, 36)
+    font = get_font(24)
     start_button = font.render('Start Game', True, GREEN)
     quit_button = font.render('Quit', True, RED)
 
@@ -48,8 +50,8 @@ def show_game_over(screen, won, steps, min_steps, level, highscore):
     background = pygame.transform.scale(background, (WIDTH, HEIGHT))
     screen.blit(background, (0, 0))
 
-    title_font = pygame.font.Font(None, 60)
-    text_font = pygame.font.Font(None, 36)
+    title_font = get_font(50)
+    text_font = get_font(24)
     mid_x = WIDTH // 2
     mid_y = HEIGHT // 2
     line_gap = 50

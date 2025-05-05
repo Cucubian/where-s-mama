@@ -26,3 +26,10 @@ ORANGE = (255, 165, 0)
 BLOCK_SIZE = 40
 SCREEN_WIDTH = 600
 SCREEN_HEIGHT = 600
+
+# Font settings
+FONT_PATH = "assets/fonts/Myfont.ttf"
+
+def get_font(size):
+    import pygame  # Đảm bảo import khi dùng
+    return pygame.font.Font(FONT_PATH, size)

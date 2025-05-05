@@ -118,7 +118,7 @@ def run_game(screen):
                     screen.fill(WHITE)
                     # Vẽ thanh thông tin trên cùng (50px)
                     pygame.draw.rect(screen, (230, 230, 230), (0, 0, WIDTH, 50))  # Màu xám rất nhạt
-                    font = pygame.font.Font(None, 24)  # Font nhỏ hơn để vừa với thanh
+                    font = get_font(18)  # Font nhỏ hơn để vừa với thanh
                     screen.blit(font.render(f'Level: {CURRENT_LEVEL}', True, PURPLE), (10, 10))
                     screen.blit(font.render(f'Min steps: {min_steps}', True, ORANGE), (90, 10))
                     screen.blit(font.render(f'Steps: {steps}', True, BLUE), (210, 10))
@@ -153,6 +153,7 @@ def run_game(screen):
 
                     # Kiểm tra khi người chơi thua (vượt quá số bước tối thiểu)
                     elif steps >= min_steps:
+                        pygame.mixer.stop() 
                         sound_manager.play_lose()  # Phát âm thanh khi thua
                         CURRENT_LEVEL = 1  # Reset về level 1 khi thua
                         if show_game_over(screen, False, steps, min_steps, CURRENT_LEVEL, highscore):
@@ -163,6 +164,7 @@ def run_game(screen):
 
                     # Kiểm tra khi hết thời gian
                     elif elapsed_time >= time_limit:
+                        pygame.mixer.stop() 
                         sound_manager.play_lose()  # Phát âm thanh khi hết thời gian
                         CURRENT_LEVEL = 1  # Reset về level 1 khi hết thời gian
                         if show_game_over(screen, False, steps, min_steps, CURRENT_LEVEL, highscore):

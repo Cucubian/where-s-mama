@@ -22,3 +22,10 @@ class SoundManager:
 
     def play_lose(self):
         self.lose_sound.play()
+
+    def toggle_music(self):
+        self.is_music_on = not self.is_music_on
+        if self.is_music_on:
+            self.play_music()
+        else:
+            self.stop_music()
