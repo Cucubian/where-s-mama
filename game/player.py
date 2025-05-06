@@ -1,12 +1,14 @@
 import pygame
 from settings import BLOCK_SIZE
 from settings import BLOCK_SIZE, TOP_BAR_HEIGHT
+from settings import CHARACTER_DATA
 
 class Player:
-    def __init__(self, x, y):
+    def __init__(self, x, y, char_name):
         self.x = x
         self.y = y
-        self.image = pygame.image.load('assets/images/monkey.png')
+        self.char_name = char_name
+        self.image = pygame.image.load(CHARACTER_DATA[char_name]["image"])
         self.image = pygame.transform.scale(self.image, (BLOCK_SIZE, BLOCK_SIZE))
 
     def move(self, dx, dy, grid):
@@ -20,4 +22,3 @@ class Player:
 
     def draw(self, screen):
         screen.blit(self.image, (self.x * BLOCK_SIZE, self.y * BLOCK_SIZE + TOP_BAR_HEIGHT))
-

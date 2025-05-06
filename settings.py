@@ -30,6 +30,12 @@ SCREEN_HEIGHT = 600
 # Font settings
 FONT_PATH = "assets/fonts/Myfont.ttf"
 
+CHARACTER_DATA = {
+    "monkey1": {"name": "Monkey 1", "image": "assets/images/monkey.png"},
+    "monkey2": {"name": "Monkey 2", "image": "assets/images/monkey2.png"}# Thay đổi đường dẫn nếu cần
+}
+DEFAULT_CHARACTER = "monkey1"  # Nhân vật mặc định
+
 def get_font(size):
     import pygame  # Đảm bảo import khi dùng
     return pygame.font.Font(FONT_PATH, size)

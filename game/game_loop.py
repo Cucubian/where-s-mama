@@ -46,8 +46,10 @@ def run_game(screen):
     sound_manager.play_music()
 
     while running_menu:
-        if show_menu(screen, CURRENT_LEVEL, sound_manager):
+        menu_result = show_menu(screen, CURRENT_LEVEL, sound_manager)
+        if menu_result:
             playing = True
+            selected_char = menu_result[1]  # Lấy nhân vật đã chọn
             while playing:
                 while True:
                     start_pos, end_pos = get_random_positions()
@@ -57,7 +59,7 @@ def run_game(screen):
                 min_steps, path = get_min_steps(grid, start_pos, end_pos)
                 if not path:
                     continue
-                player = Player(*start_pos)
+                player = Player(*start_pos, selected_char)  # Truyền nhân vật đã chọn
                 visited_tiles = set()
                 steps = 0
                 game_running = True
@@ -113,7 +115,7 @@ def run_game(screen):
                     font = get_font(18)
                     screen.blit(font.render(f'Level: {CURRENT_LEVEL}', True, PURPLE), (10, 10))
                     screen.blit(font.render(f'Min steps: {min_steps}', True, ORANGE), (90, 10))
-                    screen.blit(font.render(f'Steps: {steps}', True, BLUE), (210, 10))
+                    screen.blit(font.render(f'Steps: {steps}', True, BLUE), (215, 10))
                     screen.blit(font.render(f'Time left: {remaining_time}s', True, RED), (300, 10))
 
                     quit_text = font.render('Quit', True, RED)
