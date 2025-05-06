@@ -34,7 +34,7 @@ def show_menu(screen, level=1, sound_manager=None):
 
     # Character selection
     font = pygame.font.Font(None, 24)
-    char_text = font.render("Choose Character:", True, BLUE)
+    char_text = font.render("Choose Character:", True, GREEN)
     char_rect = char_text.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 100))
 
     # Load character images and scale them
