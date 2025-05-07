@@ -20,10 +20,10 @@ def show_menu(screen, level=1, sound_manager=None):
     quit_rect = quit_button.get_rect(center=(WIDTH//2, HEIGHT//2 + 50))
 
     # Load speaker icons
-    speaker_on = pygame.image.load('assets/images/unmute_icon.png')
-    speaker_on = pygame.transform.scale(speaker_on, (40, 40))
-    speaker_off = pygame.image.load('assets/images/mute_icon.png')
-    speaker_off = pygame.transform.scale(speaker_off, (40, 40))
+    speaker_on = pygame.image.load('assets/images/mic_on.png')
+    speaker_on = pygame.transform.scale(speaker_on, (40, 60))
+    speaker_off = pygame.image.load('assets/images/mic_off.png')
+    speaker_off = pygame.transform.scale(speaker_off, (40, 60))
 
     # Determine initial speaker icon
     if sound_manager.muted:
