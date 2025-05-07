@@ -160,13 +160,16 @@ def show_menu(screen, level=1, sound_manager=None):
         pygame.display.flip()
 
 
-def show_game_over(screen, win, steps, min_steps, level, highscore):
-    background = pygame.image.load('assets/images/mother.png')
+def show_game_over(screen, won, steps, min_steps, level, highscore):
+    if won:
+        background = pygame.image.load('assets/images/monkeyLaugh.png')  # ảnh khi thắng
+    else:
+        background = pygame.image.load('assets/images/monkeyCry.png')  # ảnh khi thua
     background = pygame.transform.scale(background, (WIDTH, HEIGHT))
     screen.blit(background, (0, 0))
 
     font = pygame.font.Font(None, 50)
-    if win:
+    if won:
         text = font.render('You Win!', True, GREEN)
     else:
         text = font.render('Game Over!', True, RED)
