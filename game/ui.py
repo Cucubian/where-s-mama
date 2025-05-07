@@ -21,9 +21,9 @@ def show_menu(screen, level=1, sound_manager=None):
 
     # Load speaker icons
     speaker_on = pygame.image.load('assets/images/mic_on.png')
-    speaker_on = pygame.transform.scale(speaker_on, (40, 60))
+    speaker_on = pygame.transform.scale(speaker_on, (60, 90))
     speaker_off = pygame.image.load('assets/images/mic_off.png')
-    speaker_off = pygame.transform.scale(speaker_off, (40, 60))
+    speaker_off = pygame.transform.scale(speaker_off, (60, 90))
 
     # Determine initial speaker icon
     if sound_manager.muted:
