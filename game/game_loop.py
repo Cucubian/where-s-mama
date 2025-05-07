@@ -4,12 +4,12 @@ import sys
 from settings import *
 from maze.maze import generate_maze, draw_grid
 from maze.a_star import a_star
-from game.player import Player
+from game.character.player import Player
 from game.bfs import bfs
 from game.ui import show_menu, show_game_over
 import time
 import random
-from game.sound_manager import SoundManager
+from game.manager.sound_manager import SoundManager
 
 HIGHSCORE_FILE = os.path.join('assets', 'highscore.txt')
 def load_highscore():
